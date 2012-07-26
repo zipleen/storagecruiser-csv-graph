@@ -114,7 +114,7 @@ function display_options($prop)
 		
 		function goto1(form) { 
 		
-		location.href="getcsv.php?prop=" + document.forms[0].prop.options[document.forms[0].prop.selectedIndex].value;
+		location.href="getcsv2.php?prop=" + document.forms[0].prop.options[document.forms[0].prop.selectedIndex].value;
 		}
 		//-->
 		</SCRIPT>
@@ -139,7 +139,7 @@ if(isSet($_SESSION['fields']))
                 {
                         echo getValueFor("devs", $data['dev'])."<br/>";
                 }
-		echo "<a href='getcsv.php?action=remove_fields'>remove tudo!!</a><br/>";
+		echo "<a href='getcsv2.php?action=remove_fields'>remove tudo!!</a><br/>";
         }
 	// mostrar campos para adicionar
 	echo "<h2> Adicionar campo</h2>";
@@ -158,7 +158,7 @@ if(isSet($_SESSION['fields']))
 	
 	if($prop!="")
 	{
-		echo " Devices: <select name='dev' >" . getcboxRel("dev", "prop", $prop, $_REQUEST['dev']) ."</select> <input type='submit' name='action' value='add_field' />";
+		echo " Devices: <select name='dev[]' multiple='multiple' size=40 >" . getcboxRel("dev", "prop", $prop, $_REQUEST['dev']) ."</select> <input type='submit' name='action' value='add_field' />";
 	}
 	echo "</form>";
 
@@ -218,7 +218,10 @@ function get_csv()
 switch($_REQUEST['action'])
 {
 	case 'add_field':
-		add_field($_POST['dev'],$_POST['prop']);
+		foreach($_POST['dev'] as $p)
+		{
+			add_field($p,$_POST['prop']);
+		}
 		display_options($_REQUEST['prop']);
 		break;
 
